@@ -1,7 +1,17 @@
 import { Card } from "@repo/ui/card"
+const getStatement = (status: string) => {
+    if (status === 'Success') {
+      return 'Received INR'
+    } else if (status === 'Processing') {
+      return 'To be Received INR'
+    } else {
+      return 'Failed'
+    }
+  }
 
 export const OnRampTransactions = ({
-    transactions
+    transactions,
+    title = 'Recent wallet Transactions',
 }: {
     transactions: {
         time: Date,
@@ -10,20 +20,21 @@ export const OnRampTransactions = ({
         status: string,
         provider: string
     }[]
+    title?: string
 }) => {
     if (!transactions.length) {
-        return <Card title="Recent Transactions">
+        return <Card title={title}>
             <div className="text-center pb-8 pt-8">
-                No Recent transactions
+                No {title}
             </div>
         </Card>
     }
-    return <Card title="Recent Transactions">
+    return <Card title={title}>
         <div className="pt-2">
             {transactions.map(t => <div className="flex justify-between">
                 <div>
                     <div className="text-sm">
-                        Received INR
+                        {getStatement(t.status)}
                     </div>
                     <div className="text-slate-600 text-xs">
                         {t.time.toDateString()}
